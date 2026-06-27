@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Anudeep Mantravadi - Aerospace &amp; Mechanical Engineer</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #010101;
+    --bg2: #0a0a0a;
+    --bg3: #111111;
+    --border: rgba(255,255,255,0.08);
+    --border-hover: rgba(255,255,255,0.2);
+    --text: #f0f0ec;
+    --muted: rgba(240,240,236,0.55);
+    --accent: #e8e4d8;
+    --tag-bg: rgba(255,255,255,0.06);
+    --cursor-size: 12px;
+    --sidebar-w: 230px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    line-height: 1.65;
+    font-size: 17px;
+    cursor: none;
+    overflow-x: hidden;
+  }
+
+  #cursor {
+    position: fixed;
+    width: var(--cursor-size);
+    height: var(--cursor-size);
+    background: var(--text);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s, background 0.2s, border-radius 0.2s;
+    mix-blend-mode: difference;
+  }
+  #cursor.hovering { width: 40px; height: 40px; background: var(--text); border-radius: 50%; }
+  #cursor.clicking { width: 8px; height: 8px; }
+
+  /* LEFT SIDEBAR NAVIGATION */
+  #sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: rgba(1,1,1,0.97);
+    border-right: 1px solid var(--border);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    padding: 2.5rem 0;
+    overflow-y: auto;
+  }
+  .sidebar-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    color: var(--text);
+    text-decoration: none;
+    padding: 0 2rem;
+    margin-bottom: 3rem;
+    display: block;
+    line-height: 1.5;
+  }
+  .sidebar-links {
+    list-style: none;
+    flex: 1;
+  }
+  .sidebar-links li { margin-bottom: 0.3rem; }
+  .sidebar-links a {
+    display: block;
+    padding: 0.65rem 2rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+  }
+  .sidebar-links a:hover {
+    color: var(--text);
+    border-left-color: var(--border-hover);
+    background: rgba(255,255,255,0.03);
+  }
+  .sidebar-links a.active {
+    color: var(--text);
+    border-left-color: var(--text);
+    background: rgba(255,255,255,0.05);
+  }
+  .sidebar-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    margin-right: 0.6rem;
+  }
+  .sidebar-foot {
+    padding: 0 2rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+    line-height: 1.8;
+  }
+
+  main {
+    margin-left: var(--sidebar-w);
+  }
+
+  section {
+    min-height: 100vh;
+    padding: 5rem 4rem;
+  }
+
+  #hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black, transparent);
+  }
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 2rem;
+  }
+  .hero-title {
+    font-size: clamp(3.2rem, 7vw, 7rem);
+    font-weight: 300;
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    margin-bottom: 2rem;
+  }
+  .hero-desc {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 600px;
+    line-height: 1.7;
+  }
+  .hero-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    line-height: 2;
+    margin-top: 2rem;
+  }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+  .section-label span {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* PROJECT HEADER: title + role */
+  .project-header { margin-bottom: 3.5rem; max-width: 900px; }
+  .project-header h2 {
+    font-size: clamp(2rem, 3.4vw, 2.8rem);
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+  .role-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: var(--text);
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 0.5rem 1.1rem;
+    margin-bottom: 1.8rem;
+  }
+  .role-tag .role-label {
+    color: var(--muted);
+    text-transform: uppercase;
+    font-size: 0.7rem;
+  }
+  .project-about {
+    font-size: 1.05rem;
+    color: var(--muted);
+    line-height: 1.8;
+    max-width: 780px;
+  }
+  .project-about p { margin-bottom: 1.2rem; }
+  .project-about p:last-child { margin-bottom: 0; }
+
+  /* IMAGE + ROLE-BULLET ROW: 50/50 split, spaced not cramped */
+  .ir-row {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 3.5rem;
+    align-items: center;
+    margin-bottom: 5rem;
+  }
+  .ir-row.reverse { grid-template-columns: 0.85fr 1.15fr; }
+  .ir-row.reverse .ir-media { order: 2; }
+  .ir-row.reverse .ir-bullets { order: 1; }
+  .ir-media {
+    position: relative;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    background: var(--bg3);
+  }
+  .ir-media img, .ir-media video {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .ir-media.photo img, .ir-media.photo video { height: 100%; object-fit: cover; }
+  .ir-caption {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-top: 0.9rem;
+    text-transform: uppercase;
+  }
+  .ir-bullets {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 0 0.5rem;
+  }
+  .ir-bullet {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .ir-bullet-mark {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--muted);
+    flex-shrink: 0;
+    padding-top: 0.15rem;
+  }
+  .ir-bullet p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  /* live rotating 3D model stage */
+  .model-stage-3d {
+    background: var(--bg3);
+    height: 65vh;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+  }
+  .model-stage-3d canvas {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .model-stage-loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    transition: opacity 0.4s;
+  }
+  .model-stage-tag {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .model-stage-hint {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* small drawing images: contained, not full-bleed huge */
+  .drawing-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+  }
+  .drawing-cell {
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .drawing-cell img {
+    width: 100%;
+    height: 280px;
+    object-fit: contain;
+    display: block;
+  }
+  .drawing-caption {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    margin-top: 0.7rem;
+    text-transform: uppercase;
+    line-height: 1.5;
+  }
+
+  .findings-note {
+    margin-top: 3rem;
+    padding: 2rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    max-width: 900px;
+  }
+  .findings-note .findings-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 1rem;
+  }
+  .findings-note p { font-size: 0.98rem; color: var(--muted); line-height: 1.8; }
+  .findings-note p strong { color: var(--text); font-weight: 500; }
+
+  #projects { padding-top: 5rem; }
+  .projects-grid { display: grid; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .project-card { background: var(--bg); padding: 2.2rem; position: relative; }
+  .project-num { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 1.2rem; }
+  .project-title { font-size: 1.3rem; font-weight: 400; letter-spacing: -0.01em; margin-bottom: 0.9rem; }
+  .project-desc { font-size: 0.95rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 0.35rem 0.75rem; border: 1px solid var(--border); border-radius: 20px; }
+
+  #contact { display: flex; flex-direction: column; justify-content: center; min-height: 80vh; }
+  .contact-big { font-size: clamp(2.8rem, 5.5vw, 5.5rem); font-weight: 300; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 2.5rem; }
+  .contact-big a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border); }
+  .contact-big a:hover { border-color: var(--text); }
+  .contact-links { display: flex; gap: 2.5rem; }
+  .contact-link { font-family: 'Space Mono', monospace; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+  .contact-link:hover { color: var(--text); }
+  .contact-link::after { content: '\2197'; font-size: 0.8rem; }
+
+  footer { margin-left: var(--sidebar-w); padding: 2rem 4rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.08em; color: var(--muted); text-transform: uppercase; }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.35;
+  }
+
+  @media (max-width: 900px) {
+    :root { --sidebar-w: 0px; }
+    #sidebar { display: none; }
+    main { margin-left: 0; }
+    footer { margin-left: 0; }
+    section { padding: 3rem 1.5rem; }
+    .ir-row, .ir-row.reverse { grid-template-columns: 1fr; gap: 1.5rem; }
+    .ir-row.reverse .ir-media, .ir-row.reverse .ir-bullets { order: unset; }
+    .drawing-row { grid-template-columns: 1fr; }
+    .projects-grid { grid-template-columns: 1fr; }
+  }
+
+
+  /* Full-width centered 3D model row after removing placeholder bullets */
+  .ir-row.model-only {
+    display: block;
+    max-width: 1120px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .ir-row.model-only .model-stage-3d {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .ir-bullets.single-bullet {
+    justify-content: center;
+    min-height: 160px;
+  }
+  .crop-gemini-logo {
+    transform: scale(1.08) translateY(-1.5%);
+    transform-origin: center top;
+  }
+</style>
+</head>
+<body>
+<div id="cursor"></div>
+<nav id="sidebar">
+<a class="sidebar-logo" href="#hero">ANUDEEP<br/>MANTRAVADI</a>
+<ul class="sidebar-links">
+<li><a href="#lab"><span class="sidebar-num">01</span>Micro WAAM</a></li>
+<li><a href="#cfd-lab"><span class="sidebar-num">02</span>CFD &amp; PINNs</a></li>
+<li><a href="#aiaa"><span class="sidebar-num">03</span>AIAA Aircraft</a></li>
+<li><a href="#rde"><span class="sidebar-num">04</span>RDE Test Rig</a></li>
+<li><a href="#lunaris"><span class="sidebar-num">05</span>LUNARIS</a></li>
+<li><a href="#wind-tunnel"><span class="sidebar-num">06</span>Wind Tunnel</a></li>
+<li><a href="#desk"><span class="sidebar-num">07</span>Adjustable Desk</a></li>
+<li><a href="#projects"><span class="sidebar-num">08</span>In Progress</a></li>
+<li><a href="#contact"><span class="sidebar-num">09</span>Contact</a></li>
+</ul>
+<div class="sidebar-foot">Rutgers University<br/>Aerospace Engineering</div>
+</nav>
+<main>
+<section id="hero">
+<div class="hero-grid"></div>
+<div class="hero-eyebrow reveal">Aerospace and Mechanical Engineering</div>
+<h1 class="hero-title reveal">Anudeep<br/>Mantravadi</h1>
+<p class="hero-desc reveal">
+    I design, build, and test real hardware. Every project on this page started as a CAD model and ended as
+    something I could hold, instrument, and break on purpose to learn why it failed.
+  </p>
+<div class="hero-meta reveal">
+    Rutgers University · Aerospace Engineering<br/>
+    SolidWorks · ANSYS · OpenFOAM · Python
+  </div>
+</section>
+<section id="lab">
+<div class="section-label reveal"><span>Project 01</span></div>
+<div class="project-header reveal">
+<h2>Micro Wire Arc Additive Manufacturing Machine</h2>
+<div class="role-tag"><span class="role-label">My Role</span> Designer, Builder, Wiring &amp; Controls Lead</div>
+<div class="project-about">
+<p>A 3D Printer Scale Wire Arc Additive Manufacturing machine, built from scratch into a working deposition system. I designed the gantry in SolidWorks, machined and assembled the moving parts, wired three RAMPS driver boards by hand, and tuned the wire feeding mechanism to be consistent through a full deposition process.</p>
+</div>
+</div>
+<div class="ir-row reveal model-only">
+<div class="model-stage-3d" id="stage-waam-real">
+<div class="model-stage-loading" id="waam-loading">Loading assembly...</div>
+<span class="model-stage-tag">Real CAD model</span>
+<span class="model-stage-hint">Drag to rotate, scroll to zoom</span>
+</div>
+</div>
+<div class="ir-row reveal">
+<div class="ir-media">
+<video autoplay="" loop="" muted="" playsinline="" src="assets/video/waam_demo.mp4"></video>
+<div class="ir-caption">Live deposition pass, wire feed in motion</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Designed the full 3-axis gantry assembly in SolidWorks, consisting of more than 170 components, and exported them into drawings before anything was 3D printed or cut.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>The video depicts a bead of metal being deposited at an arc temperature of 1800 C using a brass nozzle as the medium of positive charge and the substrate as the medium of negative charge.</p></div>
+</div>
+</div>
+<div class="ir-row reverse reveal">
+<div class="ir-media photo">
+<img alt="Micro WAAM gantry assembly, wide view" loading="lazy" src="assets/img/waam_gantry_wide.jpg"/>
+<div class="ir-caption">3-axis gantry, fully assembled</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Assembled the 3-axis gantry and calibrated the steppers using Arduino code and manual vernier caliper measurements, checking the percent errors of movement offset on all three axes, and changing the micro-stepping, pitch, and other stepper hardware if necessary before mounting the deposition head.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Ensured 3-axis alignment using a fluid leveler, mounted the Z-axis carriage, and ensured smooth movement of the machine before proceeding to install the extrusion system.</p></div>
+</div>
+</div>
+<div class="ir-row reveal">
+<div class="ir-media photo">
+<img alt="Z-axis and wire feed mechanism detail" loading="lazy" src="assets/img/waam_gantry_detail.jpg"/>
+<div class="ir-caption">Z-axis and wire feed mechanism, detail view</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Built the Z-axis lead screw to ensure it supports the weight of the extrusion system, including the stepper motor, through drive torque and Euler analysis.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Iterated the position of the wire spool to ensure no contact of the wire is made between the charged wire and the substrate or the gantry, preventing the risk of a potential short circuit. Wire safety was determined using wire-sag analysis and a bounding-box feature in SolidWorks, known as the dynamic envelope.</p></div>
+</div>
+</div>
+<div class="ir-row reverse reveal">
+<div class="ir-media photo">
+<img alt="3D printed wire feed extruder mechanism" loading="lazy" src="assets/img/waam_extruder.jpg"/>
+<div class="ir-caption">Printed wire feed extruder mechanism</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Designed and printed a minimalist and lightweight wire feed extruder housing from scratch, ensuring minimal wire slippage through wire guides, and sized to fit the spring-loaded pinch roller assembly.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Tuned the spring load on the pinch roller until the feed rate stayed consistent across a full deposition cycle.</p></div>
+</div>
+</div>
+<div class="ir-row reveal">
+<div class="ir-media photo">
+<img alt="Custom wiring harness across RAMPS boards" loading="lazy" src="assets/img/waam_wiring.jpg"/>
+<div class="ir-caption">Custom wiring harness across four RAMPS drivers</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Wired and labeled every connection across four RAMPS driver boards by hand, namely the X, Y, Z, and Extruder stepper motors.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Diagnosed and tested wiring issues during the testing stage by isolating each motor driver in the system before full integration of components.</p></div>
+</div>
+</div>
+<div class="ir-row reverse reveal">
+<div class="ir-media photo">
+<img alt="Arc deposition closeup with sparks" loading="lazy" src="assets/img/waam_spark.jpg"/>
+<div class="ir-caption">Arc deposition, close up</div>
+</div>
+<div class="ir-bullets single-bullet">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Ran controlled deposition tests and used GD&amp;T documentation in AutoCAD to track how bead geometry changed with each parameter adjustment. Utilized WAAM bead ratios to automate a Python system that, when given the cross-section CSV data, auto-segregates the WAAM beads into nominal, overprint, and underprint data, aiming to support ongoing ML research in the lab.</p></div>
+</div>
+</div>
+</section>
+<section id="cfd-lab">
+<div class="section-label reveal"><span>Project 02</span></div>
+<div class="project-header reveal">
+<h2>Physics-Informed Neural Networks for CFD Modeling</h2>
+<div class="role-tag"><span class="role-label">My Role</span> CFD Analyst, ML Engineer</div>
+<div class="project-about">
+<p>An inverse Physics-Informed Neural Network (PINN) developed to infer unknown flow parameters, specifically kinematic viscosity, from little to no velocity measurements. Ground truth data is generated using OpenFOAM, an open-source CFD solver. The PINN directly incorporates the incompressible Navier-Stokes equations into its loss function, enabling it to capture the problem's physics while evaluating the impact of sensor placement and measurement noise.</p>
+</div>
+</div>
+<div class="ir-row reveal">
+<div class="ir-media photo">
+<img alt="Gmsh structured mesh around Clark Y airfoil with boundary layer refinement" src="assets/img/cfd_gmsh_mesh.jpg"/>
+<div class="ir-caption">Structured Gmsh mesh, boundary layer refinement, 65,000 cells</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Built the structured boundary-layer mesh in Gmsh from scratch; the imagery shown is a Clark Y Airfoil at an angle of attack of 15 degrees.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Wrote check_patches.py, a Python tool which aims to catch mislabeled boundary patches before any solver runs. The tool was created to refine meshes before the system's memory is exhausted by failed CFD attempts.</p></div>
+</div>
+</div>
+<div class="ir-row reverse reveal">
+<div class="ir-media photo">
+<img alt="Steady-state pressure field around airfoil from OpenFOAM" src="assets/img/cfd_pressure_field.jpg"/>
+<div class="ir-caption">Steady-state pressure field, simpleFoam, converged solution</div>
+</div>
+<div class="ir-bullets single-bullet">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Ran 34 total simulations across three turbulence models, four Reynolds number validations, and a 9-angle by 3-Reynolds-number sweep.</p></div>
+</div>
+</div>
+<div class="ir-row reveal">
+<div class="ir-media photo">
+<img alt="PINN versus OpenFOAM velocity and pressure field comparison scatter plot" src="assets/img/cfd_pinn_vs_openfoam_scatter.jpg"/>
+<div class="ir-caption">PINN versus OpenFOAM, velocity and pressure field comparison at Re=100</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Built the PINN architecture in PyTorch and encoded the Navier-Stokes equations directly into the loss function using automatic differentiation.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Reduced the physics-residual loss 2,790 times over training, from 1.1159 to 0.0004, with zero CFD training data used at any point.</p></div>
+</div>
+</div>
+<div class="ir-row reverse reveal">
+<div class="ir-media photo">
+<img alt="Custom boundary condition verification script output" src="assets/img/cfd_check_patches.jpg"/>
+<div class="ir-caption">check_patches.py output, catching mislabeled boundary patches</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Wrote check_patches.py after finding a real mislabeled inlet and outlet patch myself during an early debug session.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Ran the script before every solver case from then on, catching boundary condition errors before they cost a wasted run.</p></div>
+</div>
+</div>
+<div class="ir-row reveal">
+<div class="ir-media photo">
+<img alt="simpleFoam convergence and force coefficient output" src="assets/img/cfd_simplefoam_converged.jpg"/>
+<div class="ir-caption">simpleFoam convergence, 2403 iterations, full force and moment breakdown</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Drove each case to full convergence in simpleFoam, confirming residuals before pulling any force or moment data.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Logged the complete force and moment coefficients for every converged case to feed the XFOIL validation comparison. The results agreed with XFOIL, achieving a 3 percent error in lift coefficient calculations.</p></div>
+</div>
+</div>
+<div class="findings-note reveal">
+<span class="findings-label">Note</span>
+<p>Ongoing CFD work includes continuous testing of drag mismatch between CFD and XFOIL, boundary effects propagation, formulating a better loss function, data density, etc.</p>
+</div>
+</section>
+<section id="aiaa">
+<div class="section-label reveal"><span>Project 03</span></div>
+<div class="project-header reveal">
+<h2>AIAA Design-Build-Fly: RU Airborne Aircraft</h2>
+<div class="role-tag"><span class="role-label">My Role</span> Structures &amp; Sizing Lead</div>
+<div class="project-about">
+<p>
+        A full aircraft design cycle for AIAA's Design-Build-Fly competition. Constraint and sensitivity analysis
+        sized the airframe against mission requirements, structural FEA was run on every primary load-bearing
+        part before fabrication, and the aircraft was built and flown.
+      </p>
+</div>
+</div>
+<div class="ir-row reveal">
+<div class="ir-media photo">
+<img alt="Completed AIAA Design-Build-Fly aircraft on the runway" class="crop-gemini-logo" src="assets/img/aiaa_aircraft_photo.jpg"/>
+<div class="ir-caption">Completed aircraft, runway ready</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Drove the airframe sizing decision using constraint analysis that fixed thrust-to-weight and wing loading against takeoff distance, cruise speed, and turn load factor at the same time.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Used sensitivity analysis to identify banner length and bank angle as the dominant score components, then directed the design process toward those two parameters specifically.</p></div>
+</div>
+</div>
+<div class="ir-row reverse reveal">
+<div class="ir-media photo">
+<img alt="Full isometric exploded CAD view of the aircraft with 37 labeled components" src="assets/img/aiaa_exploded_cad.jpg"/>
+<div class="ir-caption">Full isometric exploded view, 37 labeled components</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Worked in a diverse team of 18 engineers to model the complete aircraft in SolidWorks through final assembly, covering all 37 labeled components.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Specialized in working on the structural design aspect of the project, working on the wing spar, firewall, and landing gear's CAD and FEA results.</p></div>
+</div>
+</div>
+<div class="ir-row reveal">
+<div class="ir-media photo">
+<img alt="Wing spar finite element analysis stress distribution" src="assets/img/aiaa_wing_spar_fea.jpg"/>
+<div class="ir-caption">Wing spar FEA, stress under load</div>
+</div>
+<div class="ir-bullets single-bullet">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>FEA of the wing spar is shown, calculating equivalent von Mises stresses of the component caused by the deformation due to gravity, as the half-wing is a fixed beam.</p></div>
+</div>
+</div>
+<div class="ir-row reverse reveal">
+<div class="ir-media photo">
+<img alt="Constraint analysis plot for thrust-to-weight versus wing loading" src="assets/img/aiaa_constraint_analysis.jpg"/>
+<div class="ir-caption">Constraint analysis, thrust-to-weight versus wing loading</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Plotted every mission constraint, takeoff distance, cruise speed, and turn load factor, on one chart to find the single design point that satisfied all three at once.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Used the constraint chart to lock the thrust-to-weight and wing loading values before any structural sizing began.</p></div>
+</div>
+</div>
+<div class="ir-row reveal">
+<div class="ir-media photo">
+<img alt="Sensitivity analysis plot for mission score versus design parameters" src="assets/img/aiaa_sensitivity_analysis.jpg"/>
+<div class="ir-caption">Sensitivity analysis, score response to battery, bank angle, wingspan</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Checked battery capacity, bank angle, and wingspan independently to find which parameters actually moved the mission score.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Identified banner length and bank angle as the two highest-leverage parameters, then spent the remaining design time on those instead of spreading effort evenly.</p></div>
+</div>
+</div>
+<div class="ir-row reverse reveal">
+<div class="ir-media photo">
+<img alt="Main landing gear finite element analysis deflection" src="assets/img/aiaa_landing_gear_fea.jpg"/>
+<div class="ir-caption">Main landing gear FEA, deflection under load</div>
+</div>
+<div class="ir-bullets single-bullet">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Modeled the main landing gear under worst-case landing load and checked deflection passing the clearance before fabrication.</p></div>
+</div>
+</div>
+<div class="ir-row reveal">
+<div class="ir-media photo">
+<img alt="Firewall finite element analysis strain distribution" src="assets/img/aiaa_firewall_fea.jpg"/>
+<div class="ir-caption">Firewall FEA, strain around mounts</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Ran strain analysis on the firewall around every motor mount point to confirm it could hold under vibration loads.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Used the strain map to decide where material could be removed for weight without weakening the mount points.</p></div>
+</div>
+</div>
+<div class="ir-row reverse reveal">
+<div class="ir-media photo">
+<img alt="Banner deployment mechanism simulation" src="assets/img/aiaa_banner_mechanism_fea.jpg"/>
+<div class="ir-caption">Banner deployment mechanism, gear-driven actuation</div>
+</div>
+<div class="ir-bullets single-bullet">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Performed structural analysis on the banner deployment mechanism and simulated its actuation cycle before building the first prototype.</p></div>
+</div>
+</div>
+</section>
+<section id="rde">
+<div class="section-label reveal"><span>Project 04</span></div>
+<div class="project-header reveal">
+<h2>Rotating Detonation Engine, Cold Flow Test Rig</h2>
+<div class="role-tag"><span class="role-label">My Role</span> Design, Instrumentation &amp; Data Pipeline Lead</div>
+<div class="project-about">
+<p>Built a small-scale cold-flow test rig to study the rotating detonation engine wave dynamics without combustion. Compressed air drives through a de Laval nozzle fed by a ring of 45-degree angled injection holes, which change the tangential momentum of the wind, causing a rotating pressure wave around the annulus chamber. Two MPU6050 accelerometer and gyro modules sit on the outer wall, one above the converging section and one below the throat, both recording wave behavior on both sides of the geometry over a pressure range of 3 to 90 PSI.</p>
+</div>
+</div>
+<div class="ir-row reverse reveal">
+<div class="ir-media photo">
+<img alt="Onshape CAD model of the RDE housing with construction planes for the angled injection hole pattern" src="assets/img/rde_cad_planes.jpg"/>
+<div class="ir-caption">CAD construction, 12-plane radial pattern for the 45 degree injection holes</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Built the 12-plane pattern in SolidWorks to set every injection hole at exactly 45 degrees around the radial pattern.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Verified the hole pattern's symmetry in CAD before committing to a print, since an off-angle hole would imbalance the rotating wave, causing noise in the measurements.</p></div>
+</div>
+</div>
+<div class="ir-row reveal">
+<div class="ir-media photo">
+<img alt="3D printed RDE housing showing the converging-diverging bore and angled injection holes" src="assets/img/rde_injection_holes.jpg"/>
+<div class="ir-caption">Printed housing, converging-diverging bore, angled injection holes at the rim</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>The image shows the engine's exit chamber, including the necessary wiring for the Raspberry Pi Zero and the MPU-6050, which records the machine's vibrations.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Placed one MPU6050 to isolate how the wave signature changes across the geometry instead of averaging it out.</p></div>
+</div>
+</div>
+<div class="ir-row reverse reveal">
+<div class="ir-media photo">
+<img alt="Full cold-flow test rig with regulated air supply and instrumentation" src="assets/img/rde_test_rig.jpg"/>
+<div class="ir-caption">Full test rig, regulated air supply, instrumentation breadboard</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Connected a wireless pressure machine to sweep the pressure range from 30 to 90 PSI using a threaded pressure inlet causing no loss in pressure.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Derived thrust without using a thrust test mechanism, just by filtering low-frequency content below 10 Hz from the same accelerometer signal and applying thrust equals mass times acceleration against the weighed mass of the full assembly.</p></div>
+</div>
+</div>
+<div class="ir-row reveal">
+<div class="ir-media photo">
+<video autoplay="" loop="" muted="" playsinline="" src="assets/video/rde_cfd_streamlines.mp4" style="background: #fff;"></video>
+<div class="ir-caption">CFD rotating streamline view, velocity magnitude through the injector ring</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Ran the CFD streamline study through the injector ring and channel, confirming the rotation of the flow by the angled holes.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Trained an Isolation Forest model on 6,792 logged samples across five pressures, flagging 680 anomalies, 10 percent of the dataset.</p></div>
+</div>
+</div>
+<div class="ir-row reverse reveal">
+<div class="ir-media photo">
+<video autoplay="" loop="" muted="" playsinline="" src="assets/video/rde_dashboard_demo.mp4" style="background: #fff;"></video>
+<div class="ir-caption">Live diagnostics dashboard, pressure sweep, FFT spectrum, real-time health metrics</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Built the full-stack diagnostics dashboard in Flask and JavaScript, with live FFT spectrum, time history, and per-sensor health metrics.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Found that 30 PSI showed the highest turbulence at 20.4 percent, a result the live FFT and severity-index readings confirmed during testing.</p></div>
+</div>
+</div>
+<div class="ir-row reveal">
+<div class="ir-media photo">
+<img alt="Dual MPU6050 sensor wiring on the printed housing" src="assets/img/rde_sensor_wiring.jpg"/>
+<div class="ir-caption">Dual MPU6050 wiring, converging-section and diverging-section sensors</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Wired both MPU6050 modules to the same logging board and verified independent, synchronized sample timing on each channel.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Routed and secured the sensor leads against the housing so they survived the full pressure sweep without disconnecting.</p></div>
+</div>
+</div>
+<div class="ir-row reverse reveal">
+<div class="ir-media photo">
+<img alt="CFD turbulent kinematic viscosity contour through the injection holes and channel" src="assets/img/rde_cfd_viscosity.jpg"/>
+<div class="ir-caption">CFD turbulent kinematic viscosity through the injector and rotating channel</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Ran the turbulent kinematic viscosity contour to check where the flow through the injector holes was still developing versus fully turbulent.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Used the viscosity field alongside the streamline study to confirm the CFD and the live sensor data were describing the same physical behavior.</p></div>
+</div>
+</div>
+<div class="section-label reveal" style="margin-top: 1rem;"><span>Manufacturing &amp; Tolerancing</span></div>
+<div class="drawing-row reveal">
+<div class="drawing-cell">
+<img alt="RDE injector plate top view with GD&amp;T callouts and datum references" src="assets/img/rde_injector_plate_drawing.jpg"/>
+<div></div>
+</div>
+<div class="drawing-cell">
+<img alt="RDE nozzle cone axial cross-section with converging and diverging dimensions" src="assets/img/rde_nozzle_cone_drawing.jpg"/>
+<div></div>
+</div>
+<div class="drawing-cell">
+<img alt="Tolerance stack-up analysis table comparing worst-case and RSS methods against design limit" src="assets/img/rde_tolerance_stackup.jpg"/>
+<div></div>
+</div>
+</div>
+<div class="drawing-row reveal" style="margin-top: -2rem; grid-template-columns: repeat(3, 1fr);">
+<div class="drawing-caption">Injector plate, 10-port pattern, concentricity and runout callouts, dual-datum scheme</div>
+<div class="drawing-caption">Nozzle cone, converging and diverging half-angles, throat callout, Inconel 718</div>
+<div class="drawing-caption">Tolerance stack-up, worst-case versus RSS, 8.3 percent design margin remaining</div>
+</div>
+<div class="findings-note reveal">
+<span class="findings-label">Engineering Pipeline</span>
+<p>Four GD&amp;T manufacturing drawings (injector plate, nozzle cone, assembly, tolerance stack-up) carry worst-case analysis. An SPC control plan flagged the throat diameter at Cpk equals 1.11, below the 1.33 target, identifying it as the dimension which is most likely to drift out of spec across a print run.</p>
+</div>
+</section>
+<section id="lunaris">
+<div class="section-label reveal"><span>Project 05</span></div>
+<div class="project-header reveal">
+<h2>LUNARIS: Lunar Autonomous Navigation and Resource Identification System</h2>
+<div class="role-tag"><span class="role-label">My Role</span> Pipeline Architect, Sole Developer</div>
+<div class="project-about">
+<p>
+        Every kilogram of rocket propellant launched from Earth costs between $2,000 and $50,000 depending on
+        destination. Deep space missions must carry all their fuel from Earth, which makes them expensive and
+        infrequent. The fix the space industry is converging on is propellant made from lunar water ice. NASA's
+        Artemis program targets the lunar south pole because craters there hold confirmed water ice, found by
+        the Lunar Prospector spacecraft in 1998.
+      </p>
+<p>
+        Finding the best mining site currently takes teams of scientists months of manual data fusion across
+        multiple NASA instruments. No automated tool existed to do this, so I built one. LUNARIS is an
+        open-source pipeline that goes from raw NASA orbital data to ranked candidate sites with economic
+        valuations in under 90 seconds, across five integrated layers: terrain intelligence, ice probability
+        mapping, multi-objective ISRU scoring, autonomous rover coordination, and a cross-planetary transfer
+        model from Moon to Mars.
+      </p>
+</div>
+</div>
+<div class="ir-row reveal">
+<div class="ir-media photo">
+<img alt="ISRU Site Selection Heatmap" src="assets/img/isru_site_selection.png"/>
+<div class="ir-caption">Terrain safety, ice probability, and ISRU economic scoring</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Built the CNN-based terrain intelligence layer and the ice probability mapping layer on raw NASA orbital instrument data.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Combined terrain safety, ice probability, and solar access into a single multi-objective ISRU score, ranking every candidate site by economic value per square kilometer.</p></div>
+</div>
+</div>
+<div class="ir-row reverse reveal">
+<div class="ir-media photo">
+<img alt="A* Pathfinding on Lunar Terrain" src="assets/img/astar_path.png"/>
+<div class="ir-caption">A* pathfinding across high-value lunar craters</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Implemented A* pathfinding across the CNN terrain cost map to route a rover toward the highest-value ISRU sites.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Built the autonomous rover swarm layer to route multiple rovers around the same map without collision.</p></div>
+</div>
+</div>
+<div class="ir-row reveal">
+<div class="ir-media photo">
+<img alt="Rover Swarm Coordination Simulation" src="assets/img/swarm_sim.png"/>
+<div class="ir-caption">Autonomous rover swarm coordination simulation</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Simulated multiple rovers operating against the same hazard map at once, checking that the coordination layer kept them from converging on the same path.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Used the swarm simulation to validate that the site rankings from the ISRU scoring layer held up under multi-rover constraints.</p></div>
+</div>
+</div>
+<div class="ir-row reverse reveal">
+<div class="ir-media photo">
+<img alt="DANN Moon to Mars transfer learning training curves" src="assets/img/dann_training.png"/>
+<div class="ir-caption">DANN Moon to Mars transfer learning, classification accuracy and domain discriminator accuracy</div>
+</div>
+<div class="ir-bullets single-bullet">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Built a domain-adversarial neural network to transfer the lunar terrain classifier to Mars, training source accuracy up to the high 80s while target accuracy stayed in the 45 to 60 percent range.</p></div>
+</div>
+</div>
+<p style="font-family:'Space Mono',monospace;font-size:0.72rem;letter-spacing:0.06em;color:var(--muted);text-transform:uppercase;margin-top: 1rem;">
+    This project has been submitted to the Rutgers Innovation Awards 2026 and NASA RASC-AL 2027.
+  </p>
+</section>
+<section id="wind-tunnel">
+<div class="section-label reveal"><span>Project 06</span></div>
+<div class="project-header reveal">
+<h2>Adjustable Swept Wing and Wind Tunnel Test System</h2>
+<div class="role-tag"><span class="role-label">My Role</span> System Design, Electronics &amp; Data Acquisition</div>
+<div class="project-about">
+<p>
+        A small-scale low-speed wind tunnel system built to test the aerodynamic behavior of a NACA 4415 airfoil.
+        An Elegoo UNO R3 microcontroller drives two synchronized MG90S servo motors to set the wing's angle of
+        attack, while a BMP280 pressure sensor mounted near 52 percent chord on the upper surface measures
+        static pressure changes during airflow.
+      </p>
+</div>
+</div>
+<div class="ir-row reveal">
+<div class="ir-media photo">
+<img alt="Wind Tunnel Setup Overview" class="crop-gemini-logo" src="assets/img/270f2dd7-07ea-4570-b5f3-6026c5fc79db.jpeg"/>
+<div class="ir-caption">Wind tunnel setup, full overview</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Designed and built the wind tunnel test section and mounted the BMP280 pressure sensor at 52 percent chord on the wing's upper surface.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Programmed the Elegoo UNO R3 to drive both MG90S servos in sync, sweeping angle of attack through a repeatable test sequence.</p></div>
+</div>
+</div>
+<div class="ir-row reverse reveal">
+<div class="ir-media photo">
+<img alt="Airfoil Test Section" src="assets/img/6239a951-9d01-48be-99e5-20fbafa3365f.jpeg"/>
+<div class="ir-caption">Airfoil test section and sensor mount</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Wrote the analysis pipeline that converts pressure readings, fan gear setting, and NACA 4415 low-Reynolds-number polar data into lift coefficient, drag coefficient, and lift-to-drag ratio.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Built the real-time display output on both the Arduino Serial Monitor and an ST7735 TFT screen so results were visible during the test, not just after.</p></div>
+</div>
+</div>
+<div class="ir-row reveal">
+<div class="ir-media photo">
+<img alt="Stall Behavior &amp; AoA Sweep" src="assets/img/4fe921c7-7f05-4217-864a-ea8af96f207b.png" style="background:#fff; object-fit: contain; padding: 1rem;"/>
+<div class="ir-caption">Stall behavior and angle of attack sweep telemetry</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Captured stall behavior across the full angle of attack sweep and logged it against the live pressure trace.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Produced the low-Reynolds-number drag polar curve directly from test data.</p></div>
+</div>
+</div>
+<div class="ir-row reverse reveal">
+<div class="ir-media photo">
+<img alt="Velocity Effects on Aerodynamic Performance" src="assets/img/5af45dd4-1664-42b6-8fdf-cf5e1a9a01ef.png" style="background:#fff; object-fit: contain; padding: 1rem;"/>
+<div class="ir-caption">Velocity effects on lift force and aerodynamic performance</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Swept tunnel velocity across multiple fan gear settings and logged lift force against each speed independently.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Cross-checked the velocity-versus-lift trend against the NACA 4415 reference polar to confirm the test rig was measuring real aerodynamic behavior, not sensor noise.</p></div>
+</div>
+</div>
+<div class="ir-row reveal">
+<div class="ir-media photo">
+<img alt="Drag Polar Curve" src="assets/img/6376cb66-4e8c-4e5e-8dd1-9e253f47f933.png" style="background:#fff; object-fit: contain; padding: 1rem;"/>
+<div class="ir-caption">Low-Reynolds-number drag polar curve</div>
+</div>
+<div class="ir-bullets single-bullet">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Used the polar curve to identify the angle of attack range where lift-to-drag ratio peaked for this airfoil at low Reynolds number.</p></div>
+</div>
+</div>
+</section>
+<section id="desk">
+<div class="section-label reveal"><span>Project 07</span></div>
+<div class="project-header reveal">
+<h2>Height-Adjustable Desk</h2>
+<div class="role-tag"><span class="role-label">My Role</span> Mechanical Design, Motion Analysis</div>
+<div class="project-about">
+<p>A complex mechanical assembly in SolidWorks built using two scissor lifts driven by a linear actuator. Every fastener, bearing, and weld bead is modeled, making this a full mechanical engineering project in sheet metal and hardware.</p>
+</div>
+</div>
+<div class="ir-row reveal">
+<div class="ir-media">
+<video autoplay="" loop="" muted="" playsinline="" src="assets/video/Full-MotionStudy-Video.mp4" style="object-fit: cover;"></video>
+<div class="ir-caption">SolidWorks motion study, scissor lift actuation</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Modeled the dual scissor-lift mechanism with a lead screw drive, angular contact bearings, and rack and pinion guides, all with tolerances ensured so the assembly works in harmony.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Ran the full motion study in SolidWorks to confirm the lift stayed level and collision-free through the entire contraction-to-extension range.</p></div>
+</div>
+</div>
+<div class="ir-row reverse reveal">
+<div class="ir-media photo">
+<img alt="Kinematics Profile" src="assets/img/desk_kinematics.jpg"/>
+<div class="ir-caption">Scissor lift kinematics, contracted versus extended state</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Detailed the scissor-link arms, pivot joints, bearing interfaces, and lead-screw mounting geometry so the lift mechanism could move symmetrically under load.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Checked the scissor-lift linkage through its contracted and extended positions to verify pivot spacing, platform leveling, and actuator travel before finalizing the design.</p></div>
+</div>
+</div>
+<div class="ir-row reveal">
+<div class="ir-media photo">
+<img alt="Engineering Drawing" src="assets/img/desk_drawing.jpg"/>
+<div class="ir-caption">Part drawing and dimensioning</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Dimensioned every part drawing to the tolerance needed for the lead screw and bearing fits to actually work as designed.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Cross-checked each drawing against the assembly model before release, catching key errors before final assembling.</p></div>
+</div>
+</div>
+<div class="ir-row reverse reveal">
+<div class="ir-media photo">
+<img alt="Exploded Assembly" src="assets/img/desk_assembly.jpg"/>
+<div class="ir-caption">Exploded assembly view</div>
+</div>
+<div class="ir-bullets">
+<div class="ir-bullet"><span class="ir-bullet-mark">01</span><p>Built the exploded assembly view to show the build order for the scissor mechanism, since several parts had to go in before the frame closed.</p></div>
+<div class="ir-bullet"><span class="ir-bullet-mark">02</span><p>Used the exploded view to verify fastener access at every joint before finalizing the design.</p></div>
+</div>
+</div>
+</section>
+<section id="projects">
+<div class="section-label reveal"><span>In Progress</span></div>
+<div class="projects-grid" style="grid-template-columns: 1fr;">
+<div class="project-card reveal">
+<div class="project-num">AST Modular 6U CubeSat</div>
+<h3 class="project-title">Open-Source Modular 6U CubeSat Framework</h3>
+<p class="project-desc">Working for the Aerospace Career Transformation (ACT) Bootcamp, a workforce development program partnered with 150+ companies, undergoing rigorous gate reviews for design defense. Part of the development of a modular 6U CubeSat framework, covering standardized bus interfaces, deployable structure design, and payload integration specs.</p>
+<div class="project-tags">
+<span class="tag">6U CubeSat</span>
+<span class="tag">SolidWorks</span>
+<span class="tag">Space Structures</span>
+<span class="tag">Open Source</span>
+<span class="tag">Modular</span>
+</div>
+</div>
+</div>
+</section>
+<section id="contact">
+<div class="section-label reveal"><span>Contact</span></div>
+<h2 class="contact-big reveal">Let's build<br/>something<br/><a href="mailto:amantravadi@outlook.com">real.</a></h2>
+<div class="contact-links reveal">
+<a class="contact-link" href="mailto:amantravadi@outlook.com">Email</a>
+<a class="contact-link" href="https://www.linkedin.com/in/amantravadi/" target="_blank">LinkedIn</a>
+</div>
+</section>
+</main>
+<footer>
+<span>(c) 2026 Aerospace and Mechanical Engineer</span>
+<span>Rutgers University</span>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/environments/RoomEnvironment.js"></script>
+<script>
+  const cursor = document.getElementById('cursor');
+  let mouseX = 0, mouseY = 0, curX = 0, curY = 0;
+  document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+  function animateCursor() {
+    curX += (mouseX - curX) * 0.12;
+    curY += (mouseY - curY) * 0.12;
+    cursor.style.left = curX + 'px';
+    cursor.style.top = curY + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+  document.querySelectorAll('a, button, .ir-media').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+  });
+  document.addEventListener('mousedown', () => cursor.classList.add('clicking'));
+  document.addEventListener('mouseup', () => cursor.classList.remove('clicking'));
+
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  const sections = document.querySelectorAll('main section[id]');
+  const sidebarLinks = document.querySelectorAll('.sidebar-links a');
+  const sectionObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        sidebarLinks.forEach(link => link.classList.remove('active'));
+        const match = document.querySelector('.sidebar-links a[href="#' + entry.target.id + '"]');
+        if (match) match.classList.add('active');
+      }
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(s => sectionObs.observe(s));
+
+  function initWaamStage(containerId, loadingId, glbPath) {
+    const container = document.getElementById(containerId);
+    const loadingEl = document.getElementById(loadingId);
+    if (!container) return;
+
+    function setLoadingText(message, isError = false) {
+      if (!loadingEl) return;
+      loadingEl.textContent = message;
+      loadingEl.style.opacity = '1';
+      loadingEl.style.display = 'flex';
+      loadingEl.style.color = isError ? '#ffb3b3' : 'var(--muted)';
+    }
+
+    function hideLoadingText() {
+      if (!loadingEl) return;
+      loadingEl.style.opacity = '0';
+      setTimeout(() => { loadingEl.style.display = 'none'; }, 400);
+    }
+
+    if (!window.THREE || !THREE.WebGLRenderer || !THREE.GLTFLoader) {
+      setLoadingText('3D loader unavailable', true);
+      console.error('[WAAM stage] Three.js or GLTFLoader did not load. Check the CDN script tags above the main script.');
+      return;
+    }
+
+    let renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+        powerPreference: 'high-performance',
+        logarithmicDepthBuffer: true
+      });
+    } catch (e) {
+      setLoadingText('WebGL unavailable', true);
+      console.error('[WAAM stage] WebGL renderer failed', e);
+      return;
+    }
+
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
+    renderer.setClearColor(0x000000, 0);
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 0.95;
+    renderer.physicallyCorrectLights = false;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    container.insertBefore(renderer.domElement, container.firstChild);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(38, 1, 0.01, 100);
+
+    try {
+      if (THREE.PMREMGenerator && THREE.RoomEnvironment) {
+        const pmremGenerator = new THREE.PMREMGenerator(renderer);
+        pmremGenerator.compileEquirectangularShader();
+        const roomEnv = new THREE.RoomEnvironment();
+        scene.environment = pmremGenerator.fromScene(roomEnv, 0.04).texture;
+        pmremGenerator.dispose();
+      }
+    } catch (e) {
+      console.warn('[WAAM stage] environment map failed, continuing with direct lights only', e);
+    }
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
+    scene.add(ambientLight);
+
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x20202a, 0.55);
+    scene.add(hemiLight);
+
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2.65);
+    keyLight.position.set(4, 6, 5);
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.set(1024, 1024);
+    keyLight.shadow.camera.near = 0.1;
+    keyLight.shadow.camera.far = 20;
+    keyLight.shadow.bias = -0.0005;
+    keyLight.shadow.normalBias = 0.035;
+    scene.add(keyLight);
+
+    const fillLight = new THREE.DirectionalLight(0xdce6ff, 0.95);
+    fillLight.position.set(-5, 2.5, 3);
+    scene.add(fillLight);
+
+    const rimLight = new THREE.DirectionalLight(0xffffff, 0.85);
+    rimLight.position.set(0, 4, -6);
+    scene.add(rimLight);
+
+    const frontLight = new THREE.DirectionalLight(0xffffff, 0.45);
+    frontLight.position.set(0, 1.5, 6);
+    scene.add(frontLight);
+
+    function resize() {
+      const w = Math.max(container.clientWidth, 1);
+      const h = Math.max(container.clientHeight, 1);
+      renderer.setSize(w, h);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+
+    const modelGroup = new THREE.Group();
+    scene.add(modelGroup);
+
+    const loader = new THREE.GLTFLoader();
+
+    if (THREE.DRACOLoader) {
+      const dracoLoader = new THREE.DRACOLoader();
+      dracoLoader.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/draco/');
+      loader.setDRACOLoader(dracoLoader);
+    }
+
+    function makeReadableCadMaterial(sourceMaterial) {
+      // Same HSL-based CAD color mapping as the earlier portfolio,
+      // but with the brightness/metalness pulled down so the model does not wash out white.
+      const hsl = { h: 0, s: 0, l: 0 };
+
+      if (sourceMaterial && sourceMaterial.color) {
+        sourceMaterial.color.getHSL(hsl);
+      } else {
+        hsl.s = 0;
+        hsl.l = 0.5;
+      }
+
+      const physMat = new THREE.MeshPhysicalMaterial({
+        side: THREE.DoubleSide,
+        envMapIntensity: 0.55
+      });
+
+      // Neutral CAD parts: rails, plates, frame members.
+      // Do NOT use near-white here; that was the washout source.
+      if (hsl.s < 0.2) {
+        physMat.color.setHex(0x6F7F93);
+        physMat.metalness = 0.22;
+        physMat.roughness = 0.52;
+        physMat.clearcoat = 0.0;
+      }
+      // Warm/yellow-ish imported CAD parts: push them into the dark structural color.
+      else if (hsl.h > 0.05 && hsl.h < 0.25) {
+        physMat.color.setHex(0x20283A);
+        physMat.metalness = 0.18;
+        physMat.roughness = 0.64;
+        physMat.clearcoat = 0.0;
+      }
+      // Accent parts: make the red visible instead of pale pink.
+      else {
+        physMat.color.setHex(0xC8233B);
+        physMat.metalness = 0.05;
+        physMat.roughness = 0.45;
+        physMat.clearcoat = 0.35;
+        physMat.clearcoatRoughness = 0.35;
+      }
+
+      physMat.needsUpdate = true;
+      return physMat;
+    }
+
+    function prepareLoadedModel(gltf, loadedPath) {
+      const model = gltf.scene;
+      let meshCount = 0;
+
+      model.traverse((node) => {
+        if (!node.isMesh || !node.geometry) return;
+        meshCount += 1;
+
+        if (!node.geometry.attributes.normal) {
+          node.geometry.computeVertexNormals();
+        }
+
+        node.castShadow = true;
+        node.receiveShadow = false;
+        node.frustumCulled = false;
+
+        const materials = Array.isArray(node.material) ? node.material : [node.material];
+        const newMaterials = materials.map((mat) => makeReadableCadMaterial(mat));
+        node.material = newMaterials.length === 1 ? newMaterials[0] : newMaterials;
+      });
+
+      if (meshCount === 0) {
+        throw new Error('GLB loaded, but no mesh objects were found.');
+      }
+
+      const box = new THREE.Box3().setFromObject(model);
+      const size = box.getSize(new THREE.Vector3());
+      const center = box.getCenter(new THREE.Vector3());
+      const maxDim = Math.max(size.x, size.y, size.z);
+
+      if (!Number.isFinite(maxDim) || maxDim <= 0) {
+        throw new Error('GLB loaded, but the bounding box was invalid.');
+      }
+
+      model.position.sub(center);
+
+      const scale = 2.55 / maxDim;
+      model.scale.setScalar(scale);
+      modelGroup.add(model);
+
+      const scaledSizeY = size.y * scale;
+      const shadowPlane = new THREE.Mesh(
+        new THREE.PlaneGeometry(8, 8),
+        new THREE.ShadowMaterial({ opacity: 0.055, color: 0x000000 })
+      );
+      shadowPlane.rotation.x = -Math.PI / 2;
+      shadowPlane.position.y = -scaledSizeY / 2 - 0.015;
+      shadowPlane.receiveShadow = true;
+      shadowPlane.renderOrder = -1;
+      modelGroup.add(shadowPlane);
+
+      // Visual centering adjustment: the WAAM assembly is physically asymmetric,
+      // so a mathematically centered bounding box still looks pushed to the right.
+      // This shifts only the rendered model group left; it does not change the
+      // scroll-driven rotation logic below.
+      modelGroup.position.x = -0.34;
+
+      const radius = 4.4;
+      camera.position.set(0, 0.42, radius);
+      camera.lookAt(0, 0, 0);
+
+      hideLoadingText();
+      console.log('[WAAM stage] loaded:', loadedPath, 'meshes:', meshCount);
+    }
+
+    const candidatePaths = Array.from(new Set([
+      glbPath,
+      './' + glbPath,
+      glbPath.replace('assets/models/', 'assets/'),
+      glbPath.split('/').pop()
+    ]));
+
+    function loadModelFromCandidates(pathIndex = 0) {
+      if (pathIndex >= candidatePaths.length) {
+        setLoadingText('Model file not found', true);
+        console.error('[WAAM stage] Could not load the WAAM GLB. Make sure the file is located at assets/models/micro_waam.glb and that you are running the site through a local server, not by double-clicking the HTML file.');
+        return;
+      }
+
+      const path = candidatePaths[pathIndex];
+      setLoadingText('Loading assembly...');
+
+      loader.load(
+        path,
+        (gltf) => {
+          try {
+            prepareLoadedModel(gltf, path);
+          } catch (e) {
+            setLoadingText('Model setup error', true);
+            console.error('[WAAM stage] GLB loaded but setup failed:', e);
+          }
+        },
+        undefined,
+        (err) => {
+          console.warn('[WAAM stage] failed to load candidate:', path, err);
+          loadModelFromCandidates(pathIndex + 1);
+        }
+      );
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+    loadModelFromCandidates();
+
+    let rotY = 0.6;
+    let targetRotY = 0.6;
+    const baseRotX = 0.15;
+
+    function updateScrollRotation() {
+      const rect = container.getBoundingClientRect();
+      const stageCenter = rect.top + (rect.height / 2);
+      const screenCenter = window.innerHeight / 2;
+      const offset = stageCenter - screenCenter;
+      targetRotY = 0.6 - (offset / window.innerHeight) * (Math.PI * 2);
+    }
+
+    window.addEventListener('scroll', updateScrollRotation, { passive: true });
+    updateScrollRotation();
+
+    let isVisible = true;
+    const visObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { isVisible = entry.isIntersecting; });
+    }, { threshold: 0.01 });
+    visObserver.observe(container);
+
+    function animate() {
+      requestAnimationFrame(animate);
+      if (!isVisible) return;
+
+      rotY += (targetRotY - rotY) * 0.25;
+
+      modelGroup.rotation.x = baseRotX;
+      modelGroup.rotation.y = rotY;
+
+      renderer.render(scene, camera);
+    }
+    animate();
+  }
+
+  initWaamStage('stage-waam-real', 'waam-loading', 'assets/models/micro_waam.glb');
+</script>
+</body>
+</html>
