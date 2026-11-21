@@ -711,7 +711,7 @@
 <div class="model-stage-3d" id="stage-waam-real">
 <div class="model-stage-loading" id="waam-loading">Loading assembly...</div>
 <span class="model-stage-tag">Real CAD model</span>
-<span class="model-stage-hint">Drag to rotate, scroll to zoom</span>
+<span class="model-stage-hint">Drag to rotate</span>
 </div>
 </div>
 <div class="fig-grid reveal">
@@ -1034,7 +1034,6 @@
       loadingEl.style.display = 'flex';
       loadingEl.style.color = isError ? '#ffb3b3' : 'var(--muted)';
     }
-
     function hideLoadingText() {
       if (!loadingEl) return;
       loadingEl.style.opacity = '0';
@@ -1043,76 +1042,54 @@
 
     if (!window.THREE || !THREE.WebGLRenderer || !THREE.GLTFLoader) {
       setLoadingText('3D loader unavailable', true);
-      console.error('[WAAM stage] Three.js or GLTFLoader did not load. Check the CDN script tags above the main script.');
       return;
     }
 
     let renderer;
     try {
-      renderer = new THREE.WebGLRenderer({
-        antialias: true,
-        alpha: true,
-        powerPreference: 'high-performance',
-        logarithmicDepthBuffer: true
-      });
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
     } catch (e) {
       setLoadingText('WebGL unavailable', true);
-      console.error('[WAAM stage] WebGL renderer failed', e);
       return;
     }
-
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setClearColor(0x000000, 0);
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 0.95;
-    renderer.physicallyCorrectLights = false;
+    renderer.toneMappingExposure = 0.85;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.domElement.style.touchAction = 'pan-y';
+    renderer.domElement.style.cursor = 'grab';
     container.insertBefore(renderer.domElement, container.firstChild);
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(38, 1, 0.01, 100);
+    const camera = new THREE.PerspectiveCamera(34, 1, 0.01, 100);
 
     try {
       if (THREE.PMREMGenerator && THREE.RoomEnvironment) {
-        const pmremGenerator = new THREE.PMREMGenerator(renderer);
-        pmremGenerator.compileEquirectangularShader();
-        const roomEnv = new THREE.RoomEnvironment();
-        scene.environment = pmremGenerator.fromScene(roomEnv, 0.04).texture;
-        pmremGenerator.dispose();
+        const pmrem = new THREE.PMREMGenerator(renderer);
+        scene.environment = pmrem.fromScene(new THREE.RoomEnvironment(), 0.04).texture;
+        pmrem.dispose();
       }
-    } catch (e) {
-      console.warn('[WAAM stage] environment map failed, continuing with direct lights only', e);
-    }
+    } catch (e) { /* direct lights only */ }
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
-    scene.add(ambientLight);
-
-    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x20202a, 0.55);
-    scene.add(hemiLight);
-
-    const keyLight = new THREE.DirectionalLight(0xffffff, 2.65);
-    keyLight.position.set(4, 6, 5);
-    keyLight.castShadow = true;
-    keyLight.shadow.mapSize.set(1024, 1024);
-    keyLight.shadow.camera.near = 0.1;
-    keyLight.shadow.camera.far = 20;
-    keyLight.shadow.bias = -0.0005;
-    keyLight.shadow.normalBias = 0.035;
-    scene.add(keyLight);
-
-    const fillLight = new THREE.DirectionalLight(0xdce6ff, 0.95);
-    fillLight.position.set(-5, 2.5, 3);
-    scene.add(fillLight);
-
-    const rimLight = new THREE.DirectionalLight(0xffffff, 0.85);
-    rimLight.position.set(0, 4, -6);
-    scene.add(rimLight);
-
-    const frontLight = new THREE.DirectionalLight(0xffffff, 0.45);
-    frontLight.position.set(0, 1.5, 6);
-    scene.add(frontLight);
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x1a1a22, 0.6));
+    const key = new THREE.DirectionalLight(0xffffff, 1.8);
+    key.position.set(3, 6, 4);
+    key.castShadow = true;
+    key.shadow.mapSize.set(2048, 2048);
+    key.shadow.camera.left = -3; key.shadow.camera.right = 3;
+    key.shadow.camera.top = 3; key.shadow.camera.bottom = -3;
+    key.shadow.bias = -0.0004;
+    key.shadow.normalBias = 0.02;
+    scene.add(key);
+    const fill = new THREE.DirectionalLight(0xdfe8ff, 0.6);
+    fill.position.set(-5, 2, 3);
+    scene.add(fill);
+    const rim = new THREE.DirectionalLight(0xffffff, 0.7);
+    rim.position.set(0, 4, -6);
+    scene.add(rim);
 
     function resize() {
       const w = Math.max(container.clientWidth, 1);
@@ -1126,198 +1103,124 @@
     scene.add(modelGroup);
 
     const loader = new THREE.GLTFLoader();
-
     if (THREE.DRACOLoader) {
-      const dracoLoader = new THREE.DRACOLoader();
-      dracoLoader.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/draco/');
-      loader.setDRACOLoader(dracoLoader);
+      const draco = new THREE.DRACOLoader();
+      draco.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/draco/');
+      loader.setDRACOLoader(draco);
     }
 
-    function makeReadableCadMaterial(sourceMaterial) {
-      // Same HSL-based CAD color mapping as the earlier portfolio,
-      // but with the brightness/metalness pulled down so the model does not wash out white.
+    // Keep the Onshape appearance colors; only tune finish per part type.
+    const matCache = new Map();
+    function cadMaterial(src) {
+      const color = (src && src.color) ? src.color.clone().convertSRGBToLinear() : new THREE.Color(0x9aa3ad); // Onshape writes sRGB values
+      const k = color.getHexString();
+      if (matCache.has(k)) return matCache.get(k);
       const hsl = { h: 0, s: 0, l: 0 };
-
-      if (sourceMaterial && sourceMaterial.color) {
-        sourceMaterial.color.getHSL(hsl);
-      } else {
-        hsl.s = 0;
-        hsl.l = 0.5;
-      }
-
-      const physMat = new THREE.MeshPhysicalMaterial({
-        side: THREE.DoubleSide,
-        envMapIntensity: 0.55
+      color.getHSL(hsl);
+      const neutral = hsl.s < 0.15;
+      const m = new THREE.MeshStandardMaterial({
+        color,
+        metalness: neutral ? 0.55 : 0.15,   // aluminium / steel vs. printed or painted parts
+        roughness: neutral ? 0.38 : 0.5,
+        envMapIntensity: neutral ? 1.0 : 0.6,
+        side: THREE.DoubleSide
       });
-
-      // Neutral CAD parts: rails, plates, frame members.
-      // Do NOT use near-white here; that was the washout source.
-      if (hsl.s < 0.2) {
-        physMat.color.setHex(0x6F7F93);
-        physMat.metalness = 0.22;
-        physMat.roughness = 0.52;
-        physMat.clearcoat = 0.0;
-      }
-      // Warm/yellow-ish imported CAD parts: push them into the dark structural color.
-      else if (hsl.h > 0.05 && hsl.h < 0.25) {
-        physMat.color.setHex(0x20283A);
-        physMat.metalness = 0.18;
-        physMat.roughness = 0.64;
-        physMat.clearcoat = 0.0;
-      }
-      // Accent parts: make the red visible instead of pale pink.
-      else {
-        physMat.color.setHex(0xC8233B);
-        physMat.metalness = 0.05;
-        physMat.roughness = 0.45;
-        physMat.clearcoat = 0.35;
-        physMat.clearcoatRoughness = 0.35;
-      }
-
-      physMat.needsUpdate = true;
-      return physMat;
+      matCache.set(k, m);
+      return m;
     }
 
-    function prepareLoadedModel(gltf, loadedPath) {
+    function prepareLoadedModel(gltf) {
       const model = gltf.scene;
+      model.rotation.x = Math.PI / 2; // Onshape exports Z-up
+      model.updateMatrixWorld(true);
       let meshCount = 0;
-
       model.traverse((node) => {
         if (!node.isMesh || !node.geometry) return;
         meshCount += 1;
-
-        if (!node.geometry.attributes.normal) {
-          node.geometry.computeVertexNormals();
-        }
-
+        if (!node.geometry.attributes.normal) node.geometry.computeVertexNormals();
         node.castShadow = true;
-        node.receiveShadow = false;
-        node.frustumCulled = false;
-
-        const materials = Array.isArray(node.material) ? node.material : [node.material];
-        const newMaterials = materials.map((mat) => makeReadableCadMaterial(mat));
-        node.material = newMaterials.length === 1 ? newMaterials[0] : newMaterials;
+        node.receiveShadow = true;
+        const mats = Array.isArray(node.material) ? node.material : [node.material];
+        const out = mats.map(cadMaterial);
+        node.material = out.length === 1 ? out[0] : out;
       });
+      if (!meshCount) throw new Error('No meshes in model');
 
-      if (meshCount === 0) {
-        throw new Error('GLB loaded, but no mesh objects were found.');
-      }
-
-      const box = new THREE.Box3().setFromObject(model);
+      const wrap = new THREE.Group(); wrap.add(model);
+      const box = new THREE.Box3().setFromObject(wrap);
       const size = box.getSize(new THREE.Vector3());
       const center = box.getCenter(new THREE.Vector3());
       const maxDim = Math.max(size.x, size.y, size.z);
+      const scale = 2.6 / maxDim;
+      wrap.position.copy(center).multiplyScalar(-scale);
+      wrap.scale.setScalar(scale);
+      modelGroup.add(wrap);
 
-      if (!Number.isFinite(maxDim) || maxDim <= 0) {
-        throw new Error('GLB loaded, but the bounding box was invalid.');
-      }
-
-      model.position.sub(center);
-
-      const scale = 2.55 / maxDim;
-      model.scale.setScalar(scale);
-      modelGroup.add(model);
-
-      const scaledSizeY = size.y * scale;
-      const shadowPlane = new THREE.Mesh(
-        new THREE.PlaneGeometry(8, 8),
-        new THREE.ShadowMaterial({ opacity: 0.055, color: 0x000000 })
+      const floor = new THREE.Mesh(
+        new THREE.PlaneGeometry(10, 10),
+        new THREE.ShadowMaterial({ opacity: 0.25 })
       );
-      shadowPlane.rotation.x = -Math.PI / 2;
-      shadowPlane.position.y = -scaledSizeY / 2 - 0.015;
-      shadowPlane.receiveShadow = true;
-      shadowPlane.renderOrder = -1;
-      modelGroup.add(shadowPlane);
+      floor.rotation.x = -Math.PI / 2;
+      floor.position.y = -(size.y * scale) / 2 - 0.005;
+      floor.receiveShadow = true;
+      scene.add(floor);
 
-      // Visual centering adjustment: the WAAM assembly is physically asymmetric,
-      // so a mathematically centered bounding box still looks pushed to the right.
-      // This shifts only the rendered model group left; it does not change the
-      // scroll-driven rotation logic below.
-      modelGroup.position.x = -0.34;
-
-      const radius = 4.4;
-      camera.position.set(0, 0.42, radius);
-      camera.lookAt(0, 0, 0);
-
+      camera.position.set(0, 0.55, 4.6);
+      camera.lookAt(0, -0.05, 0);
       hideLoadingText();
-      console.log('[WAAM stage] loaded:', loadedPath, 'meshes:', meshCount);
-    }
-
-    const candidatePaths = Array.from(new Set([
-      glbPath,
-      './' + glbPath,
-      glbPath.replace('assets/models/', 'assets/'),
-      glbPath.split('/').pop()
-    ]));
-
-    function loadModelFromCandidates(pathIndex = 0) {
-      if (pathIndex >= candidatePaths.length) {
-        setLoadingText('Model file not found', true);
-        console.error('[WAAM stage] Could not load the WAAM GLB. Make sure the file is located at assets/models/micro_waam.glb and that you are running the site through a local server, not by double-clicking the HTML file.');
-        return;
-      }
-
-      const path = candidatePaths[pathIndex];
-      setLoadingText('Loading assembly...');
-
-      loader.load(
-        path,
-        (gltf) => {
-          try {
-            prepareLoadedModel(gltf, path);
-          } catch (e) {
-            setLoadingText('Model setup error', true);
-            console.error('[WAAM stage] GLB loaded but setup failed:', e);
-          }
-        },
-        undefined,
-        (err) => {
-          console.warn('[WAAM stage] failed to load candidate:', path, err);
-          loadModelFromCandidates(pathIndex + 1);
-        }
-      );
     }
 
     resize();
     window.addEventListener('resize', resize);
-    loadModelFromCandidates();
+    setLoadingText('Loading assembly...');
+    loader.load(glbPath, (gltf) => {
+      try { prepareLoadedModel(gltf); }
+      catch (e) { setLoadingText('Model setup error', true); console.error('[WAAM stage]', e); }
+    }, undefined, (err) => {
+      setLoadingText('Model file not found', true);
+      console.error('[WAAM stage] failed to load', glbPath, err);
+    });
 
-    let rotY = 0.6;
-    let targetRotY = 0.6;
-    const baseRotX = 0.15;
-
-    function updateScrollRotation() {
-      const rect = container.getBoundingClientRect();
-      const stageCenter = rect.top + (rect.height / 2);
-      const screenCenter = window.innerHeight / 2;
-      const offset = stageCenter - screenCenter;
-      targetRotY = 0.6 - (offset / window.innerHeight) * (Math.PI * 2);
-    }
-
-    window.addEventListener('scroll', updateScrollRotation, { passive: true });
-    updateScrollRotation();
+    // Drag to rotate, slow auto-spin when idle.
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let rotY = -0.6, rotX = 0.12, velY = 0, dragging = false, lastX = 0, lastY = 0, idleAt = 0;
+    const el = renderer.domElement;
+    el.addEventListener('pointerdown', (e) => {
+      dragging = true; lastX = e.clientX; lastY = e.clientY; velY = 0;
+      el.setPointerCapture(e.pointerId); el.style.cursor = 'grabbing';
+    });
+    el.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      const dx = e.clientX - lastX, dy = e.clientY - lastY;
+      lastX = e.clientX; lastY = e.clientY;
+      velY = dx * 0.008;
+      rotY += velY;
+      rotX = Math.max(-0.35, Math.min(0.7, rotX + dy * 0.005));
+    });
+    const endDrag = () => { dragging = false; idleAt = performance.now(); el.style.cursor = 'grab'; };
+    el.addEventListener('pointerup', endDrag);
+    el.addEventListener('pointercancel', endDrag);
 
     let isVisible = true;
-    const visObserver = new IntersectionObserver((entries) => {
+    new IntersectionObserver((entries) => {
       entries.forEach(entry => { isVisible = entry.isIntersecting; });
-    }, { threshold: 0.01 });
-    visObserver.observe(container);
+    }, { threshold: 0.01 }).observe(container);
 
     function animate() {
       requestAnimationFrame(animate);
       if (!isVisible) return;
-
-      rotY += (targetRotY - rotY) * 0.25;
-
-      modelGroup.rotation.x = baseRotX;
-      modelGroup.rotation.y = rotY;
-
+      if (!dragging) {
+        velY *= 0.94;
+        rotY += velY;
+        if (!reduceMotion && performance.now() - idleAt > 2500) rotY += 0.0025;
+      }
+      modelGroup.rotation.set(rotX, rotY, 0);
       renderer.render(scene, camera);
     }
     animate();
   }
 
-  initWaamStage('stage-waam-real', 'waam-loading', 'assets/models/micro_waam.glb');
+  initWaamStage('stage-waam-real', 'waam-loading', 'assets/models/micro_waam_color.glb');
 
   // mobile menu
   (function () {
