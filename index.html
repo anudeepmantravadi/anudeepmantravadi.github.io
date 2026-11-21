@@ -831,6 +831,13 @@
 <p class="funding-text">Boston Dynamics, which sponsored the $75,000 Spot robot, and the Rutgers Department of Industrial and Systems Engineering, which funds the project</p>
 </div>
 </div>
+<div class="ir-row reveal model-only">
+<div class="model-stage-3d" id="stage-spot">
+<div class="model-stage-loading" id="spot-loading">Loading assembly...</div>
+<span class="model-stage-tag">Real CAD model</span>
+<span class="model-stage-hint">Drag to rotate</span>
+</div>
+</div>
 <div class="fig-grid cols3 reveal">
 <figure class="fig portrait"><div class="ir-media"><img alt="Spot inspection robot with scissor-lift sensor mast and towed Niryo Ned2 arm cart" loading="lazy" decoding="async" src="assets/img/spot_robot_full.jpg" style="object-position:center 35%;"/></div><figcaption class="fig-line">Spot with the scissor-lift sensor mast, pan-tilt thermal/RGB head, and towed Ned2 arm cart.</figcaption></figure>
 <figure class="fig portrait"><div class="ir-media"><img alt="Niryo Ned2 arm on 3D-printed cart mount" loading="lazy" decoding="async" src="assets/img/spot_ned2_mount.jpg" style="object-position:center 40%;"/></div><figcaption class="fig-line">Niryo Ned2 arm on its 3D-printed cart mount, towed behind Spot to retrieve objects remotely.</figcaption></figure>
@@ -1026,7 +1033,8 @@
   }, { threshold: 0.4 });
   sections.forEach(s => sectionObs.observe(s));
 
-  function initWaamStage(containerId, loadingId, glbPath) {
+  function initWaamStage(containerId, loadingId, glbPath, opts) {
+    opts = opts || {};
     const container = document.getElementById(containerId);
     const loadingEl = document.getElementById(loadingId);
     if (!container) return;
@@ -1135,7 +1143,7 @@
 
     function prepareLoadedModel(gltf) {
       const model = gltf.scene;
-      model.rotation.x = Math.PI / 2; // Onshape exports Z-up
+      model.rotation.x = (opts.uprightX !== undefined) ? opts.uprightX : Math.PI / 2; // Onshape exports Z-up
       model.updateMatrixWorld(true);
       let meshCount = 0;
       model.traverse((node) => {
@@ -1187,7 +1195,7 @@
 
     // Drag to rotate, slow auto-spin when idle.
     const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let rotY = -0.6, rotX = 0.12, velY = 0, dragging = false, lastX = 0, lastY = 0, idleAt = 0;
+    let rotY = (opts.startRotY !== undefined) ? opts.startRotY : -0.6, rotX = 0.12, velY = 0, dragging = false, lastX = 0, lastY = 0, idleAt = 0;
     const el = renderer.domElement;
     el.addEventListener('pointerdown', (e) => {
       dragging = true; lastX = e.clientX; lastY = e.clientY; velY = 0;
@@ -1225,6 +1233,7 @@
   }
 
   initWaamStage('stage-waam-real', 'waam-loading', 'assets/models/micro_waam_color.glb');
+  initWaamStage('stage-spot', 'spot-loading', 'assets/models/spot.glb', { startRotY: 0.7 });
 
   // mobile menu
   (function () {
