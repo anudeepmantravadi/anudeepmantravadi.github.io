@@ -341,6 +341,9 @@
     border-radius: 20px; padding: 0.45rem 0.95rem; cursor: pointer;
   }
   .model-stage-toggle:hover { background: rgba(255,255,255,0.12); }
+  .model-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0; }
+  .model-pair .model-stage-3d { margin: 0; height: 55vh; min-height: 380px; }
+  @media (max-width: 800px) { .model-pair { grid-template-columns: 1fr; } }
   .model-stage-hint {
     position: absolute;
     bottom: 1.5rem;
@@ -842,10 +845,15 @@
 <p class="funding-text">Boston Dynamics, which sponsored the $75,000 Spot robot, and the Rutgers Department of Industrial and Systems Engineering, which funds the project</p>
 </div>
 </div>
-<div class="ir-row reveal model-only">
+<div class="model-pair reveal">
 <div class="model-stage-3d" id="stage-spot">
 <div class="model-stage-loading" id="spot-loading">Loading assembly...</div>
-<span class="model-stage-tag">Real CAD model</span>
+<span class="model-stage-tag">Spot with sensor mast</span>
+<span class="model-stage-hint">Drag to rotate</span>
+</div>
+<div class="model-stage-3d" id="stage-cart">
+<div class="model-stage-loading" id="cart-loading">Loading assembly...</div>
+<span class="model-stage-tag">Towed Ned2 arm cart</span>
 <span class="model-stage-hint">Drag to rotate</span>
 </div>
 </div>
@@ -1315,8 +1323,9 @@
 
   initWaamStage('stage-waam-real', 'waam-loading', 'assets/models/micro_waam_color.glb');
   initWaamStage('stage-spot', 'spot-loading', 'assets/models/spot.glb', { startRotY: 0.7 });
+  initWaamStage('stage-cart', 'cart-loading', 'assets/models/cart.glb', { keepPBR: true, uprightX: 0, startRotY: 0.7, fit: 2.8 });
   initWaamStage('stage-desk', 'desk-loading', 'assets/models/desk.glb', { keepPBR: true, startRotY: 0.5, fit: 3.6 });
-  initWaamStage('stage-rde', 'rde-loading', 'assets/models/rde.glb', { keepPBR: true, section: true, sectionAngle: 11, sectionOffset: 0.0516, uprightX: 0, startRotY: -1.15, fit: 2.3, sectionColor: 0xe8452c });
+  initWaamStage('stage-rde', 'rde-loading', 'assets/models/rde.glb', { keepPBR: true, section: true, sectionAngle: 191, uprightX: 0, startRotY: -2.05, fit: 2.3, sectionColor: 0xe8452c });
 
   // mobile menu
   (function () {
