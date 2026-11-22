@@ -920,6 +920,13 @@
 <p>A height-adjustable desk modeled in SolidWorks around two scissor lifts driven by a linear actuator. Every fastener, bearing, and weld bead is modeled, in sheet metal and purchased hardware.</p>
 </div>
 </div>
+<div class="ir-row reveal model-only">
+<div class="model-stage-3d" id="stage-desk">
+<div class="model-stage-loading" id="desk-loading">Loading assembly...</div>
+<span class="model-stage-tag">Real CAD model</span>
+<span class="model-stage-hint">Drag to rotate</span>
+</div>
+</div>
 <div class="fig-grid reveal">
 <figure class="fig"><div class="ir-media"><video aria-label="SolidWorks motion study of the scissor lift" muted loop playsinline preload="metadata" data-autoplay src="assets/video/Full-MotionStudy-Video.mp4"></video></div><figcaption class="fig-line">SolidWorks motion study through the full contracted-to-extended range, checking the lift stays level and collision-free.</figcaption></figure>
 <figure class="fig contain"><div class="ir-media" style="background:#494d56"><img alt="Kinematics Profile" loading="lazy" decoding="async" src="assets/img/desk_kinematics.jpg"/></div><figcaption class="fig-line">Linkage checked in contracted and extended positions for pivot spacing, platform leveling, and actuator travel.</figcaption></figure>
@@ -1134,11 +1141,16 @@
     const matCache = new Map();
     function cadMaterial(src) {
       const color = (src && src.color) ? src.color.clone().convertSRGBToLinear() : new THREE.Color(0x9aa3ad); // Onshape writes sRGB values
-      const k = color.getHexString();
+      const k = color.getHexString() + (opts.keepPBR && src ? '_' + src.metalness + '_' + src.roughness : '');
       if (matCache.has(k)) return matCache.get(k);
       const hsl = { h: 0, s: 0, l: 0 };
       color.getHSL(hsl);
       const neutral = hsl.s < 0.15;
+      if (opts.keepPBR && src) {
+        const pm = new THREE.MeshStandardMaterial({ color, metalness: src.metalness, roughness: src.roughness, envMapIntensity: 1.0, side: THREE.DoubleSide });
+        matCache.set(k, pm);
+        return pm;
+      }
       const m = new THREE.MeshStandardMaterial({
         color,
         metalness: neutral ? 0.55 : 0.15,   // aluminium / steel vs. printed or painted parts
@@ -1172,7 +1184,7 @@
       const size = box.getSize(new THREE.Vector3());
       const center = box.getCenter(new THREE.Vector3());
       const maxDim = Math.max(size.x, size.y, size.z);
-      const scale = 2.6 / maxDim;
+      const scale = (opts.fit || 2.6) / maxDim;
       wrap.position.copy(center).multiplyScalar(-scale);
       wrap.scale.setScalar(scale);
       modelGroup.add(wrap);
@@ -1243,6 +1255,7 @@
 
   initWaamStage('stage-waam-real', 'waam-loading', 'assets/models/micro_waam_color.glb');
   initWaamStage('stage-spot', 'spot-loading', 'assets/models/spot.glb', { startRotY: 0.7 });
+  initWaamStage('stage-desk', 'desk-loading', 'assets/models/desk.glb', { keepPBR: true, startRotY: 0.5, fit: 3.6 });
 
   // mobile menu
   (function () {
