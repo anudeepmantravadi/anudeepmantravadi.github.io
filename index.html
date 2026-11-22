@@ -334,6 +334,13 @@
     z-index: 2;
     pointer-events: none;
   }
+  .model-stage-toggle {
+    position: absolute; bottom: 1.2rem; left: 1.5rem; z-index: 3;
+    font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--fg, #f2f2f2); background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+    border-radius: 20px; padding: 0.45rem 0.95rem; cursor: pointer;
+  }
+  .model-stage-toggle:hover { background: rgba(255,255,255,0.12); }
   .model-stage-hint {
     position: absolute;
     bottom: 1.5rem;
@@ -944,6 +951,13 @@
 <p>A small-scale cold-flow rig for studying rotating detonation engine wave dynamics without combustion. Compressed air passes through 12 injection holes angled at 45 degrees, which add tangential momentum and set up a rotating pressure wave in the annulus. Two MPU6050 accelerometer/gyro modules on the outer wall, one above the converging section and one below the throat, record the response from 30 to 90 PSI.</p>
 </div>
 </div>
+<div class="ir-row reveal model-only">
+<div class="model-stage-3d" id="stage-rde">
+<div class="model-stage-loading" id="rde-loading">Loading assembly...</div>
+<span class="model-stage-tag">Section view &middot; injector holes</span>
+<span class="model-stage-hint">Drag to rotate</span>
+</div>
+</div>
 <div class="ir-row feature reveal">
 <div class="ir-media photo"><img alt="Full cold-flow test rig with regulated air supply and instrumentation" loading="lazy" decoding="async" src="assets/img/rde_test_rig.jpg"/></div>
 <div class="ir-bullets"><p class="fig-line lead">The cold-flow rig: regulated 30 to 90 PSI air supply with wireless pressure readout, a printed converging-diverging housing, and dual MPU6050 sensors logged by a Raspberry Pi Zero.</p></div>
@@ -1130,6 +1144,28 @@
     const modelGroup = new THREE.Group();
     scene.add(modelGroup);
 
+    // Optional section view: a plane through the part axis, cut faces shown in a solid accent color.
+    const secA = (opts.sectionAngle || 0) * Math.PI / 180;
+    const sectionBase = new THREE.Plane(new THREE.Vector3(Math.cos(secA), Math.sin(secA), 0), 0);
+    const sectionPlane = sectionBase.clone();
+    const capMeshes = [];
+    let sectionOn = !!opts.section;
+    renderer.localClippingEnabled = sectionOn;
+    function setSection(on) {
+      sectionOn = on;
+      renderer.localClippingEnabled = on;
+      capMeshes.forEach(c => { c.visible = on; });
+      if (toggleBtn) toggleBtn.textContent = on ? 'Show full part' : 'Show section';
+    }
+    let toggleBtn = null;
+    if (opts.section) {
+      toggleBtn = document.createElement('button');
+      toggleBtn.type = 'button';
+      toggleBtn.className = 'model-stage-toggle';
+      toggleBtn.addEventListener('click', () => setSection(!sectionOn));
+      container.appendChild(toggleBtn);
+    }
+
     const loader = new THREE.GLTFLoader();
     if (THREE.DRACOLoader) {
       const draco = new THREE.DRACOLoader();
@@ -1148,6 +1184,7 @@
       const neutral = hsl.s < 0.15;
       if (opts.keepPBR && src) {
         const pm = new THREE.MeshStandardMaterial({ color, metalness: src.metalness, roughness: src.roughness, envMapIntensity: 1.0, side: THREE.DoubleSide });
+        if (opts.section) pm.clippingPlanes = [sectionPlane];
         matCache.set(k, pm);
         return pm;
       }
@@ -1158,6 +1195,7 @@
         envMapIntensity: neutral ? 1.0 : 0.6,
         side: THREE.DoubleSide
       });
+      if (opts.section) m.clippingPlanes = [sectionPlane];
       matCache.set(k, m);
       return m;
     }
@@ -1167,6 +1205,7 @@
       model.rotation.x = (opts.uprightX !== undefined) ? opts.uprightX : Math.PI / 2; // Onshape exports Z-up
       model.updateMatrixWorld(true);
       let meshCount = 0;
+      const capTargets = [];
       model.traverse((node) => {
         if (!node.isMesh || !node.geometry) return;
         meshCount += 1;
@@ -1176,6 +1215,17 @@
         const mats = Array.isArray(node.material) ? node.material : [node.material];
         const out = mats.map(cadMaterial);
         node.material = out.length === 1 ? out[0] : out;
+        if (opts.section) capTargets.push(node);
+      });
+      capTargets.forEach((node) => {
+        {
+          const cap = new THREE.Mesh(node.geometry, new THREE.MeshBasicMaterial({
+            color: opts.sectionColor || 0xff5a36, side: THREE.BackSide, clippingPlanes: [sectionPlane]
+          }));
+          cap.visible = sectionOn;
+          capMeshes.push(cap);
+          node.add(cap);
+        }
       });
       if (!meshCount) throw new Error('No meshes in model');
 
@@ -1185,6 +1235,11 @@
       const center = box.getCenter(new THREE.Vector3());
       const maxDim = Math.max(size.x, size.y, size.z);
       const scale = (opts.fit || 2.6) / maxDim;
+      if (opts.section && opts.sectionOffset) {
+        // Cut perpendicular to the radius at sectionOffset (metres), keeping the inner side.
+        sectionBase.normal.set(-Math.cos(secA), -Math.sin(secA), 0);
+        sectionBase.constant = opts.sectionOffset * scale;
+      }
       wrap.position.copy(center).multiplyScalar(-scale);
       wrap.scale.setScalar(scale);
       modelGroup.add(wrap);
@@ -1200,6 +1255,7 @@
 
       camera.position.set(0, 0.55, 4.6);
       camera.lookAt(0, -0.05, 0);
+      if (opts.section) setSection(sectionOn);
       hideLoadingText();
     }
 
@@ -1248,6 +1304,10 @@
         if (!reduceMotion && performance.now() - idleAt > 2500) rotY += 0.0025;
       }
       modelGroup.rotation.set(rotX, rotY, 0);
+      if (opts.section) {
+        modelGroup.updateMatrixWorld(true);
+        sectionPlane.copy(sectionBase).applyMatrix4(modelGroup.matrixWorld);
+      }
       renderer.render(scene, camera);
     }
     animate();
@@ -1256,6 +1316,7 @@
   initWaamStage('stage-waam-real', 'waam-loading', 'assets/models/micro_waam_color.glb');
   initWaamStage('stage-spot', 'spot-loading', 'assets/models/spot.glb', { startRotY: 0.7 });
   initWaamStage('stage-desk', 'desk-loading', 'assets/models/desk.glb', { keepPBR: true, startRotY: 0.5, fit: 3.6 });
+  initWaamStage('stage-rde', 'rde-loading', 'assets/models/rde.glb', { keepPBR: true, section: true, sectionAngle: 11, sectionOffset: 0.0516, uprightX: 0, startRotY: -1.15, fit: 2.3, sectionColor: 0xe8452c });
 
   // mobile menu
   (function () {
