@@ -631,9 +631,17 @@
 
 .avail.award{color:#f5c542;margin-top:.55rem}.avail.award a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(245,197,66,.35)}.avail.award a:hover{border-color:#f5c542}.award-star{font-size:13px;line-height:1}
 .card .card-body p.card-award{color:#f5c542;font-family:'Space Mono',monospace;font-size:11px!important;line-height:1.4;letter-spacing:.04em;margin:0 0 8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip-link{position:fixed;left:1rem;top:-3rem;z-index:1000;background:#f5c542;color:#111;padding:.6rem 1rem;border-radius:4px;font-family:'Space Mono',monospace;font-size:.8rem;text-decoration:none;transition:top .15s}
+.skip-link:focus{top:1rem}
+a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:2px solid #f5c542;outline-offset:3px;border-radius:2px}
 </style>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 </head>
 <body>
+<a class="skip-link" href="#overview">Skip to projects</a>
 <div id="cursor"></div>
 <header id="mobilebar"><a class="mb-logo" href="#hero">ANUDEEP MANTRAVADI</a><button id="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar"><span></span><span></span><span></span></button></header>
 <div id="nav-overlay"></div>
@@ -658,12 +666,12 @@
 <main>
 <section id="hero">
 <div class="hero-grid"></div>
-<div class="hero-eyebrow reveal">B.S. Aerospace Engineering &middot; Rutgers University &middot; Class of 2028</div>
+<div class="hero-eyebrow reveal">B.S. Aerospace Engineering &middot; Rutgers University &middot; Class of 2028 &middot; Major GPA 3.88</div>
 <h1 class="hero-title reveal">Anudeep<br/>Mantravadi</h1>
 <div class="avail reveal"><i class="live-dot"></i>Seeking a Summer 2027 engineering internship</div>
 <div class="avail award reveal"><span class="award-star">&#9733;</span><a href="#boneload">Galactic Problem Solver, NASA Space Apps Challenge 2026</a></div>
 <div class="avail award reveal"><span class="award-star">&#9733;</span><a href="#lspace">Named innovator on a NASA New Technology Report (invention disclosure)</a></div>
-<div class="avail award reveal"><span class="award-star">&#9733;</span><a href="#spot">$75,000 Boston Dynamics Spot platform, funded by Rutgers ISE</a></div>
+<div class="avail award reveal"><span class="award-star">&#9733;</span><a href="#spot">$75,000 Boston Dynamics SPOT platform, funded by Rutgers ISE</a></div>
 <div class="cta-row reveal">
 <a class="btn primary" href="assets/Anudeep_Mantravadi_Resume.pdf" target="_blank" rel="noopener">Resume (PDF) <span>&#8599;</span></a>
 <a class="btn" href="mailto:amantravadi@outlook.com">Email</a>
@@ -677,23 +685,29 @@
 <div><dt>Design &amp; simulation</dt><dd>SolidWorks, Siemens NX, GD&amp;T, AutoCAD, ANSYS, OpenFOAM</dd></div>
 <div><dt>Manufacturing &amp; hardware</dt><dd>Wire arc additive manufacturing, CNC, machine shop fabrication, 3D printing, DFM/DFA</dd></div>
 <div><dt>Programming</dt><dd>Python, MATLAB, C/C++, PyTorch, Linux</dd></div>
+<div><dt>Key coursework</dt><dd>Fluid Mechanics, Aerospace Materials, Mechatronics, Multiphysics Simulation, Dynamic Systems &amp; Control</dd></div>
 </dl>
 </div>
 <div class="scan-col">
-<h2 class="scan-h">Leadership</h2>
+<h2 class="scan-h">Experience &amp; Leadership</h2>
 <ul class="lead-list">
 <li><strong>Research Assistant</strong>, Computational Mechanics Laboratory (CFD validation and PINN surrogates) and Advanced Manufacturing Processes Laboratory (micro wire-arc additive manufacturing), Rutgers.</li>
 <li><strong>Aerospace Structures Deputy Lead</strong>, Rutgers Airborne (AIAA). Led a 16-engineer structures sub-team from requirements to flight test.</li>
 <li><strong>Leg Mechanisms Lead</strong>, NASA L&#39;SPACE NPWEE. Led the leg subteam and CAD; named co-inventor on a NASA invention disclosure.</li>
 <li><strong>Mechanical Engineering Lead</strong>, RU HART. Leads a 12-engineer mechanical sub-team building Max Bot 2.0, an autonomous food delivery robot.</li>
-<li><strong>CNC vertical milling certified</strong> by Rutgers University.</li>
-<li><strong>Woodshop certified</strong>, Rutgers Makerspace: saws, planers, jointers, sanders, drill presses, and hand tools.</li>
+<li><strong>Product Design Extern (Co-Lead)</strong>, Rutgers MBS Externship. Co-designed a 40-component orthopedic brace and moved it to automated 3D printing, cutting projected cost 85% (from $500&#8211;1,000 to $78 per brace).</li>
+</ul>
+<h2 class="scan-h" style="margin-top:1.6rem">Certifications</h2>
+<ul class="lead-list">
+<li><strong>CNC vertical milling</strong>, Rutgers University.</li>
+<li><strong>Woodshop</strong>, Rutgers Makerspace: saws, planers, jointers, sanders, drill presses, and hand tools.</li>
 </ul>
 </div>
 </div>
 </section>
 <section id="overview">
-<div class="section-label reveal"><span>Selected work</span></div>
+<h2 class="sr-only">Selected work</h2>
+<div class="section-label reveal" aria-hidden="true"><span>Selected work</span></div>
 <div class="feat-row reveal">
 <a class="card feat" href="#lab"><div class="card-img"><img alt="" loading="lazy" decoding="async" src="assets/img/waam_gantry_wide.jpg" style="object-position:center"/></div><div class="card-body"><span class="card-num">01</span><h3>Micro WAAM </h3><p>A wire-arc metal 3D printer built from scratch: 170+ part gantry, four-board controls, working deposition.</p><span class="card-tags">NSF &middot; Rutgers MAE</span></div></a>
 <a class="card feat" href="#lspace"><div class="card-img"><img alt="" loading="lazy" decoding="async" src="assets/img/lspace_cad_restricted.jpg" style="object-position:center"/></div><div class="card-body"><span class="card-num">02</span><h3>NASA L&#39;SPACE </h3><p>Leg mechanisms lead and named co-inventor on a NASA invention disclosure; tip-over margin up 56%.</p><span class="card-tags">NASA &middot; CAD lead</span></div></a>
@@ -735,9 +749,9 @@
 <figure class="fig"><div class="ir-media"><video aria-label="Micro WAAM deposition pass with wire feed in motion" muted loop playsinline preload="metadata" data-autoplay src="assets/video/waam_demo.mp4"></video></div><figcaption class="fig-line">Live deposition pass: the arc melts the wire onto the substrate as the gantry moves.</figcaption></figure>
 <figure class="fig"><div class="ir-media"><img alt="Micro WAAM gantry assembly, wide view" loading="lazy" decoding="async" src="assets/img/waam_gantry_wide.jpg"/></div><figcaption class="fig-line">The assembled 3-axis gantry, with each stepper calibrated against vernier measurements before the deposition head went on.</figcaption></figure>
 <figure class="fig"><div class="ir-media"><img alt="Z-axis and wire feed mechanism detail" loading="lazy" decoding="async" src="assets/img/waam_gantry_detail.jpg"/></div><figcaption class="fig-line">Z-axis lead screw checked for load and buckling, and spool position set with wire-sag analysis so live wire never touches the frame.</figcaption></figure>
-<figure class="fig"><div class="ir-media"><img alt="Arc deposition closeup with sparks" loading="lazy" decoding="async" src="assets/img/waam_spark.jpg" style="transform:scale(1.07);"/></div><figcaption class="fig-line">Controlled deposition tests tracked with GD&amp;T in AutoCAD, plus a Python tool that sorts bead cross-sections into nominal, overprint, and underprint for the lab's ML work.</figcaption></figure>
-<figure class="fig"><div class="ir-media"><img alt="3D printed wire feed extruder mechanism" loading="lazy" decoding="async" src="assets/img/waam_extruder.jpg" style="object-position:center 38%;"/></div><figcaption class="fig-line">Printed wire-feed housing with guides and a spring-loaded pinch roller, tuned until feed stayed steady through a full deposition.</figcaption></figure>
-<figure class="fig"><div class="ir-media"><img alt="Custom wiring harness across RAMPS boards" loading="lazy" decoding="async" src="assets/img/waam_wiring.jpg" style="object-position:center 50%;"/></div><figcaption class="fig-line">Four RAMPS boards (X, Y, Z, extruder) wired and labeled by hand, each motor isolated and tested before integration.</figcaption></figure>
+<figure class="fig"><div class="ir-media"><img alt="Arc deposition closeup with sparks" loading="lazy" decoding="async" src="assets/img/waam_spark.jpg" style="transform:scale(1.07);"/></div><figcaption class="fig-line">Every bead used to be inspected by hand. I wrote a Python laser-scan tool that sorts cross-sections into nominal, overprint, and underprint: 250+ beads at 94.4% accuracy, and inspection went from 40 hours to 2.</figcaption></figure>
+<figure class="fig"><div class="ir-media"><img alt="3D printed wire feed extruder mechanism" loading="lazy" decoding="async" src="assets/img/waam_extruder.jpg" style="object-position:center 38%;"/></div><figcaption class="fig-line">Printed wire-feed housing with a spring-loaded pinch roller. Steady feed decides bead quality, so I calibrated it down to 0.54% slippage at 10 mm/s across four speed modes.</figcaption></figure>
+<figure class="fig"><div class="ir-media"><img alt="Custom wiring harness across RAMPS boards" loading="lazy" decoding="async" src="assets/img/waam_wiring.jpg" style="object-position:center 50%;"/></div><figcaption class="fig-line">Four RAMPS boards wired by hand. When the steppers kept misbehaving, I traced it to winding and driver connections, then moved control to Python and Arduino. Setup dropped from 8 minutes to 2.</figcaption></figure>
 </div>
 </section>
 <section id="lspace">
